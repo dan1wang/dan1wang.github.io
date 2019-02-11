@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="app.css">
+  <title>Pads</title>
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="PSThermalTab.js"></script>
+  <script type="text/javascript" src="PSPadD.js"></script>
+</head>
+<body>
+
+<div id="appWindow">
+  <nav id="appHeader">
+    <!--
+    <a href="#">Libraries</a>
+    <a class="active" href="#">QFN-28</a>
+  -->
+    <select style="margin:0.25em;float:right;" onchange="switchMode()" id="viewMode">
+      <option value="dark" selected="selected">Dark mode</option>
+      <option value="natural">Natural mode</option>
+    </select>
+  </nav>
+  <section id="appMain">
+    <aside id="appSidebar">
+      <div class="propEditor">
+        <form>
+          <select>
+            <option>E-pad ts315</option>
+            <option>Pad D d100_28</option>
+          </select>
+          <div class="field">
+            <label for="fPadLength"><span class="sym">D<sub>2</sub> </span>E-pad length</label>
+            <input  id="fPadLength" type="number" min="1" step="0.01" value="3.15"
+                   onfocus="dim_highlight('RePG_d_D2')" onblur="dim_unhighlight('RePG_d_D2')">
+          </div>
+          <div class="field">
+            <label for="fPadWidth"><span class="sym">E<sub>2</sub> </span>E-pad width</label>
+            <input  id="fPadWidth" type="number" min="1" step="0.01" value="3.15"
+                   onfocus="dim_highlight('RePG_d_E2')" onblur="dim_unhighlight('RePG_d_E2')">
+          </div>
+          <div class="field">
+            <label for="fViaDiameter"><span class="sym">ϕV<sub></sub> </span>Via hole diameter</label>
+            <input  id="fViaDiameter" type="number" step="0.01" min="0.1" max="0.5" value="0.3"
+                   onfocus="dim_highlight('RePG_d_ϕV')" onblur="dim_unhighlight('RePG_d_ϕV')">
+          </div>
+          <div class="field">
+            <label for="fViaPitchH"><span class="sym">d<sub>V</sub> </span>Via horizontal pitch</label>
+            <input  id="fViaPitchH" type="number" step="0.1" min="0.1" value="1"
+                   onfocus="dim_highlight('RePG_d_dV')" onblur="dim_unhighlight('RePG_d_dV')">
+          </div>
+          <div class="field">
+            <label for="fViaPitchV"><span class="sym">e<sub>V</sub> </span>Via vertical pitch</label>
+            <input  id="fViaPitchV" type="number" step="0.1" min="0.1" value="1"
+                   onfocus="dim_highlight('RePG_d_eV')" onblur="dim_unhighlight('RePG_d_eV')">
+          </div>
+          <div class="field">
+            <label for="fViaRingWidth"><span class="sym">k<sub>V</sub> </span>Via ring width</label>
+            <input  id="fViaRingWidth" type="number" step="0.001" min="0" value="0.08"
+                   onfocus="dim_highlight('RePG_d_kV')" onblur="dim_unhighlight('RePG_d_kV')">
+          </div>
+          <div class="field">
+            <label for="fViaTenting"><span class="sym"></span>Via tenting</label>
+            <input  id="fViaTenting" type="checkbox" checked>
+          </div>
+          <div class="field">
+            <label for="fViaLayout"><span class="sym"></span>Via layout</label>
+            <select id="fViaLayout">
+              <option value="grid" dselected="selected">Grid</option>
+              <option value="dense">Dense</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fMaskSwell"><span class="sym">M<sub>1</sub> </span>Solder mask swell</label>
+            <input  id="fMaskSwell" type="number" step="0.001" min="0" value="0.075"
+                   onfocus="dim_highlight('RePG_d_M1')" onblur="dim_unhighlight('RePG_d_M1')">
+          </div>
+          <div class="field">
+            <label for="fPasteShrink"><span class="sym">P<sub>1</sub> </span>Paste shrink</label>
+            <input  id="fPasteShrink"type="number" step="0.001" min="0" value="0.075"
+                   onfocus="dim_highlight('RePG_d_P1')" onblur="dim_unhighlight('RePG_d_P1')">
+          </div>
+          <div class="field">
+            <label for="fPasteSpacing"><span class="sym">P<sub>2</sub> </span>Paste window spacing</label>
+            <input  id="fPasteSpacing" type="number" step="0.01" min="0" value="0.25"
+                   onfocus="dim_highlight('RePG_d_P2')" onblur="dim_unhighlight('RePG_d_P2')">
+          </div>
+          <div class="action">
+            <button type="button" onclick="resetProps()">Reset</button>
+            <button type="button" onclick="updateProps()">Update</button>
+          </div>
+        </form>
+      </div>
+      <svg id="RePG" class="drdrk" viewBox="-220 -235 470 470" width="300" height="300" style="display:block;margin:auto;">
+        <defs>
+          <marker id="arrowN" markerWidth="20" markerHeight="8" refX="20" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M20 0L0 4 20 8z"/>
+          </marker>
+          <marker id="arrowH" markerWidth="20" markerHeight="8" refX="20" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M20 0L0 4 20 8z"/>
+          </marker>
+        </defs>
+        <rect class="bkground" width="500" height="500" x="-250" y="-250"/>
+        <path class="top" d="M158-158L158 158 -158 158 -158-158z"/>
+        <path class="mask" d="M295-295L295 295 -295 295 -295-295zM168-168L168 168 -168 168 -168-168zM100-125A25 25 0 0 0 100-75 25 25 0 0 0 100-125zM100-25A25 25 0 0 0 100 25 25 25 0 0 0 100-25zM100 75A25 25 0 0 0 100 125 25 25 0 0 0 100 75zM0-125A25 25 0 0 0 0-75 25 25 0 0 0 0-125zM0-25A25 25 0 0 0 0 25 25 25 0 0 0 0-25zM0 75A25 25 0 0 0 0 125 25 25 0 0 0 0 75zM-100-125A25 25 0 0 0-100-75 25 25 0 0 0-100-125zM-100-25A25 25 0 0 0-100 25 25 25 0 0 0-100-25zM-100 75A25 25 0 0 0-100 125 25 25 0 0 0-100 75z"/>
+        <path class="vias" d="M100-115A15 15 0 0 0 100-85 15 15 0 0 0 100-115zM100-15A15 15 0 0 0 100 15 15 15 0 0 0 100-15zM100 85A15 15 0 0 0 100 115 15 15 0 0 0 100 85zM0-115A15 15 0 0 0 0-85 15 15 0 0 0 0-115zM0-15A15 15 0 0 0 0 15 15 15 0 0 0 0-15zM0 85A15 15 0 0 0 0 115 15 15 0 0 0 0 85zM-100-115A15 15 0 0 0-100-85 15 15 0 0 0-100-115zM-100-15A15 15 0 0 0-100 15 15 15 0 0 0-100-15zM-100 85A15 15 0 0 0-100 115 15 15 0 0 0-100 85z"/>
+        <path class="paste" d="M147-147L147-113 133-113A35 35 0 0 0 113-133L113-147zM87-147L87-133A35 35 0 0 0 67-113L33-113A35 35 0 0 0 13-133L13-147zM67-87A35 35 0 0 0 87-67L87-33A35 35 0 0 0 67-13L33-13A35 35 0 0 0 13-33L13-67A35 35 0 0 0 33-87zM147-87L147-13 133-13A35 35 0 0 0 113-33L113-67A35 35 0 0 0 133-87zM-147-147L-147-113 -133-113A35 35 0 0 1-113-133L-113-147zM-87-147L-87-133A35 35 0 0 1-67-113L-33-113A35 35 0 0 1-13-133L-13-147zM-67-87A35 35 0 0 1-87-67L-87-33A35 35 0 0 1-67-13L-33-13A35 35 0 0 1-13-33L-13-67A35 35 0 0 1-33-87zM-147-87L-147-13 -133-13A35 35 0 0 1-113-33L-113-67A35 35 0 0 1-133-87zM-147 147L-147 113 -133 113A35 35 0 0 0-113 133L-113 147zM-87 147L-87 133A35 35 0 0 0-67 113L-33 113A35 35 0 0 0-13 133L-13 147zM-67 87A35 35 0 0 0-87 67L-87 33A35 35 0 0 0-67 13L-33 13A35 35 0 0 0-13 33L-13 67A35 35 0 0 0-33 87zM-147 87L-147 13 -133 13A35 35 0 0 0-113 33L-113 67A35 35 0 0 0-133 87zM147 147L147 113 133 113A35 35 0 0 1 113 133L113 147zM87 147L87 133A35 35 0 0 1 67 113L33 113A35 35 0 0 1 13 133L13 147zM67 87A35 35 0 0 1 87 67L87 33A35 35 0 0 1 67 13L33 13A35 35 0 0 1 13 33L13 67A35 35 0 0 1 33 87zM147 87L147 13 133 13A35 35 0 0 1 113 33L113 67A35 35 0 0 1 133 87z"/><path d="M105-100L95-100M100-95L100-105M111-100l22 0M89-100l-22 0M100-89l0 22M100-111l0-22" class="cntline"/><path d="M105 0L95 0M100 5L100-5M111 0l22 0M89 0l-22 0M100 11l0 22M100-11l0-22" class="cntline"/>
+        <path d="M105 100L95 100M100 105L100 95M111 100l22 0M89 100l-22 0M100 111l0 22M100 89l0-22" class="cntline"/>
+        <path d="M5-100L-5-100M0-95L0-105M11-100l22 0M-11-100l-22 0M0-89l0 22M0-111l0-22" class="cntline"/>
+        <path d="M5 0L-5 0M0 5L0-5M11 0l22 0M-11 0l-22 0M0 11l0 22M0-11l0-22" class="cntline"/>
+        <path d="M5 100L-5 100M0 105L0 95M11 100l22 0M-11 100l-22 0M0 111l0 22M0 89l0-22" class="cntline"/>
+        <path d="M-95-100L-105-100M-100-95L-100-105M-89-100l22 0M-111-100l-22 0M-100-89l0 22M-100-111l0-22" class="cntline"/>
+        <path d="M-95 0L-105 0M-100 5L-100-5M-89 0l22 0M-111 0l-22 0M-100 11l0 22M-100-11l0-22" class="cntline"/>
+        <path d="M-95 100L-105 100M-100 105L-100 95M-89 100l22 0M-111 100l-22 0M-100 111l0 22M-100 89l0-22" class="cntline"/>
+        <g class="dgrp" id="RePG_d_D2">
+          <line x1="158" y1="-163" x2="158" y2="-198" class="extline"/>
+          <line x1="-157" y1="-163" x2="-157" y2="-198" class="extline"/>
+          <line x1="138" y1="-190" x2="21" y2="-190" class="arrowline"/>
+          <line x1="-137" y1="-190" x2="-20" y2="-190" class="arrowline"/>
+          <text x="0.5" y="-190" class="c">D<tspan class="sub">2</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_E2">
+          <line x1="-162" y1="-158" x2="-198" y2="-158" class="extline"/>
+          <line x1="-162" y1="157" x2="-198" y2="157" class="extline"/>
+          <line x1="-190" y1="-138" x2="-190" y2="-19" class="arrowline"/>
+          <line x1="-190" y1="137" x2="-190" y2="18" class="arrowline"/>
+          <text x="-190" y="-0.5" class="c">E<tspan class="sub">2</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_dV">
+          <line x1="100" y1="138" x2="100" y2="198" class="extline"/>
+          <line y1="138" y2="198" class="extline"/>
+          <line x1="80" y1="190" x2="70" y2="190" class="arrowline"/>
+          <line x1="20" y1="190" x2="30" y2="190" class="arrowline"/>
+          <text x="50" y="190" class="c">d<tspan class="sub">V</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_eV">
+          <line x1="138" x2="198" class="extline"/>
+          <line x1="138" y1="100" x2="198" y2="100" class="extline"/>
+          <line x1="190" y1="20" x2="190" y2="31" class="arrowline"/>
+          <line x1="190" y1="80" x2="190" y2="69" class="arrowline"/>
+          <text x="190" y="50" class="c">e<tspan class="sub">V</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_kV">
+          <line x1="105" y1="-85" x2="198" y2="-85" class="extline"/>
+          <line x1="105" y1="-75" x2="198" y2="-75" class="extline"/>
+          <line x1="190" y1="-105" x2="190" y2="-115" class="arrowline"/>
+          <path d="M190-55l0 10 20 0" class="arrowline"/>
+          <text x="215" y="-45" class="l">k<tspan class="sub">V</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_M1">
+          <line x1="168" y1="172" x2="168" y2="198" class="extline"/>
+          <line x1="158" y1="162" x2="158" y2="198" class="extline"/>
+          <line x1="188" y1="190" x2="198" y2="190" class="arrowline"/>
+          <line x1="138" y1="190" x2="128" y2="190" class="arrowline"/>
+          <text x="203" y="190" class="l">M<tspan class="sub">1</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_P1">
+          <line x1="153" y1="147" x2="198" y2="147" class="extline"/>
+          <line x1="163" y1="157" x2="198" y2="157" class="extline"/>
+          <path d="M190 127l0-10 20 0" class="arrowline"/>
+          <line x1="190" y1="177" x2="190" y2="187" class="arrowline"/>
+          <text x="215" y="117" class="l">P<tspan class="sub">1</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_P2">
+          <line x1="-87" y1="152" x2="-87" y2="198" class="extline"/>
+          <line x1="-112" y1="152" x2="-112" y2="198" class="extline"/>
+          <line x1="-67" y1="190" x2="-57" y2="190" class="arrowline"/>
+          <line x1="-132" y1="190" x2="-142" y2="190" class="arrowline"/>
+          <text x="-147" y="190" class="r">P<tspan class="sub">2</tspan></text>
+        </g>
+        <g class="dgrp" id="RePG_d_ϕV">
+          <line x1="70" y1="-81" x2="62" y2="-76" class="arrowline"/>
+          <path d="M130-119L180-150 200-150" class="arrowline"/>
+          <text x="205" y="-150" class="l">ϕV<tspan class="sub"/></text>
+        </g>
+      </svg>
+    </aside>
+    <div id="appContent">
+      <svg id="pad" class="drk" viewBox="-3.5 -3.5 7 7">
+        <mask id="solderMask">
+          <rect id="solderMaskBG" width="200%" height="200%" x="-100%" y="-100%" />
+          <g id="solderMaskFG"></g>
+        </mask>
+        <g id="pl_top">
+          <rect width="3.15" height="3.15" x="-1.575" y="-1.575"  />
+        </g>
+        <g id="pl_paste"></g>
+        <g id="pl_mask" mask="url(#solderMask)">
+          <rect width="200%" height="200%" x="-100%" y="-100%"  />
+        </g>
+        <g id="pl_assy"></g>
+      </svg>
+    </div>
+    <div style="position:absolute; right:0; display:block;"><!---->
+      <div id="layers">
+        <input type="checkbox" checked="checked" onchange="toggleLayer('pl_assy',this.checked)"/>
+        <span style="color:#8A8A8A">■</span> Assembly<br />
+        <input type="checkbox" checked="checked" />
+        <span style="color:#00B400">■</span> Silk<br />
+        <input type="checkbox" checked="checked" onchange="toggleLayer('pl_mask',this.checked)" />
+        <span style="color:#2E4756">■</span> Solder mask<br />
+        <input type="checkbox" checked="checked" onchange="toggleLayer('pl_paste',this.checked)" />
+        <span style="color:#99842F">■</span> Paste mask<br />
+        <input type="checkbox" checked="checked" onchange="toggleLayer('pl_top',this.checked)" />
+        <span style="color:#FFFFAA">■</span> Top
+      </div>
+      <div id="info"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+
+  function toggleLayer(layer, show) {
+    document.getElementById(layer).style.display = show?'block':'none';
+  }
+
+</script>
+</body>
+</html>
