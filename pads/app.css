@@ -1,0 +1,299 @@
+html, body, #appWindow { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 10pt;
+}
+
+/*
+  appWindow
+  - appHeader
+  - appMain
+    - appSidebar
+    - appContent
+*/
+
+#appHeader {
+  font-size: 12pt;
+  height: 2em;
+  padding: 0;
+  background: #333;
+  overflow: hidden;
+}
+#appMain {
+  display: flex;
+  height: calc(100% - 2em);
+}
+#appSidebar {
+  overflow-y: auto;
+  height: 100%;
+  min-width: 300px;
+  width: 26em;
+}
+#appContent {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+#appHeader a {
+  height: 2em;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 0.2em 0.5em;
+  text-decoration: none;
+}
+#appHeader a:hover {
+  background-color: #ddd;
+  color: black;
+}
+#appHeader a.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.propEditor {
+  background-color:#4CAF50;
+  margin: 0;
+  padding: 0;
+}
+
+
+#pad {
+  display:block;
+  margin:0;
+  width:100%;
+  height: 100%;
+}
+
+#info {
+  padding: 0.5em;
+  border: 1px solid #909090;
+  background-color: #f9f966;
+}
+
+#layers {
+  padding: 0.5em;
+  margin-bottom:0.25em;
+  border: 1px solid #909090;
+  background-color: #e0e0e0;
+}
+
+.field {
+  display: block;
+  padding: 0.2em;
+}
+
+.field label {
+  display: inline-block;
+  width: 15em;
+}
+
+.field label .sym {
+  display: inline-block;
+  width: 2em;
+}
+
+.field input[type='number'],
+.field input[type='text'],
+.field select {
+  width: 5em;
+  height: 1.2em;
+  line-height: 1.2em;
+  padding: 0 0.1em;
+}
+
+.field input,
+.field select {
+  vertical-align:middle;
+}
+
+.field input:focus,
+.field select:focus {
+  background-color:#ffa;
+}
+
+.field select {
+  -webkit-appearance: menulist-button;
+  height: 1.5em;
+  background: #fff;
+  font: inherit;
+}
+
+.field input:invalid:not(:focus) {
+  background: pink;
+}
+
+.field:focus-within {
+  background-color: #71c174;
+}
+
+
+.propEditor .action {
+  display: block;
+  padding: 0.2em;
+  text-align: right;
+}
+
+.propEditor .action button {
+  width: 8em;
+  height: 2em;
+}
+
+.propEditor .action button:focus {
+  background-color:#ffa;
+}
+
+
+#pad {
+  fill: none;
+  stroke: none;
+  stroke-width:0.01;
+  /*vector-effect: non-scaling-stroke;*/
+}
+
+#pad.drk #solderMask { stroke: none; stroke-width:0.02;}
+#pad.drk #pl_top   * { fill: #FFFFAA; stroke: none; }
+#pad.drk #pl_mask  * { fill: #2E4756; stroke: none; }
+#pad.drk #pl_assy circle { stroke: #8A8A8A; fill: none; stroke-width: 0.02; }
+#pad.drk #pl_paste * { fill: #99842F; stroke: none; }
+#pad.drk #solderMaskFG { stroke: none; fill: black; }
+#pad.drk #solderMaskBG { stroke: none; fill: white; }
+
+#pad.nat #solderMask { stroke: none; stroke-width:0.02;}
+#pad.nat #pl_top   * { fill: rgb(252,224,131); stroke: rgb(216,168,5); }
+#pad.nat #pl_mask  * { fill: green; stroke: none; opacity:0.4; }
+#pad.nat #pl_assy circle { stroke: none; fill: gray; }
+#pad.nat #pl_paste * { fill: #c0c0c0; stroke: none; }
+#pad.nat #solderMaskFG { stroke: none; fill: black; }
+#pad.nat #solderMaskBG { stroke: none; fill: white; }
+
+#arrowN path, #arrowH {
+    stroke: none;
+}
+svg g.dgrp .arrowline {
+    marker-start: url("#arrowN");
+}
+svg g.dgrpH .arrowline {
+    marker-start: url("#arrowH");
+}
+svg .extline {
+}
+svg .cntline {
+}
+svg g.dgrp text, svg g.dgrpH text {
+    font: 28px serif;
+    alignment-baseline: middle;
+    stroke: none;
+}
+svg g.dgrp tspan.sub, svg g.dgrpH tspan.sub {
+    font: 21px serif;
+    baseline-shift: sub;
+}
+svg g.dgrp text.l, svg g.dgrpH text.l {
+    text-anchor: start;
+}
+svg g.dgrp text.c, svg g.dgrpH text.c {
+    text-anchor: middle;
+}
+svg g.dgrp text.r, svg g.dgrpH text.r {
+    text-anchor: end;
+}
+svg.drnat {
+    stroke: black;
+    stroke-width: 2;
+    fill: none;
+}
+svg.drnat .bkground {
+    stroke: none;
+    fill: none;
+}
+svg.drnat .top {
+    stroke:rgb(216,168,5);
+    fill: rgb(252,224,131);
+}
+svg.drnat .mask {
+    stroke: none;
+    fill: green;
+    fill-rule: evenodd;
+    fill-opacity:0.4;
+}
+svg.drnat .vias {
+    stroke: none;
+    fill: gray;
+}
+svg.drnat .paste {
+    stroke: none;
+    fill: #c0c0c0;
+}
+svg.drnat .cntline {
+    stroke: rgb(0,0,120);
+}
+svg.drnat #arrowN {
+    fill: rgb(0,0,120);
+}
+svg.drnat g.dgrp {
+    stroke: rgb(0,0,120);
+}
+svg.drnat g.dgrp text {
+    fill: rgb(0,0,120);
+}
+svg.drnat #arrowH {
+    fill: rgb(220,0,0);
+}
+svg.drnat g.dgrpH {
+    stroke: rgb(220,0,0);
+}
+svg.drnat g.dgrpH text {
+    fill: rgb(220,0,0);
+}
+svg.drdrk {
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+}
+svg.drdrk .bkground {
+    stroke: none;
+    fill: black;
+}
+svg.drdrk .top {
+    stroke: #FFFFAA;
+    fill: none;
+}
+svg.drdrk .mask {
+    stroke: #2E4756;
+    fill: none;
+}
+svg.drdrk .vias {
+    stroke: #8A8A8A;
+    fill: none;
+}
+svg.drdrk .paste {
+    stroke: #99842F;
+    fill: none;
+}
+svg.drdrk .cntline {
+    stroke: #8A8A8A;
+}
+svg.drdrk #arrowN {
+    fill: #8A8A8A;
+}
+svg.drdrk g.dgrp {
+    stroke: #8A8A8A;
+}
+svg.drdrk g.dgrp text {
+    fill: #8A8A8A;
+}
+svg.drdrk #arrowH {
+    fill: #ffff99;
+}
+svg.drdrk g.dgrpH {
+    stroke: #ffff99;
+}
+svg.drdrk g.dgrpH text {
+    fill: #ffff99;
+}
